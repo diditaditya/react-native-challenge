@@ -1,16 +1,43 @@
 import React from 'react';
 import {  View, TouchableOpacity, Text , Image} from 'react-native';
 
+import MoreDetail from './WeatherMoreDetail';
+
 class Weather extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      showMore: false
+    }
+  }
+
+  onPress() {
+    console.log(this.state.showMore);
+    if(this.state.showMore) {
+      this.setState({
+        showMore: false
+      })
+    } else {
+      this.setState({
+        showMore: true
+      })
+    }
+
+  }
+
   render() {
+    // console.log(this.state);
     return (
-      <TouchableOpacity style={styles.weatherContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.weatherText}>{this.props.weather.date}</Text>
-          <Text style={styles.weatherText}>{this.props.weather.weather.description}</Text>
+      <TouchableOpacity onPress={()=>this.onPress()} style={styles.weatherContainer}>
+        <View style={styles.visible}>
+          <View>
+            <Text style={styles.weatherText}>{this.props.weather.date}</Text>
+            <Text style={styles.weatherText}>{this.props.weather.weather.description}</Text>
+          </View>
+          <Image style={styles.image} source={{uri: this.props.weather.icon}}/>
         </View>
-        <Image style={styles.image} source={{uri: this.props.weather.icon}}/>
+        <MoreDetail showMore={this.state.showMore} weather={this.props.weather}/>
       </TouchableOpacity>
     )
   }
@@ -21,20 +48,19 @@ const styles = {
     backgroundColor: '#1EE494',
     marginBottom: 10,
     padding: 5,
-    borderRadius: 10,
+    borderRadius: 10
+  },
+  visible: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  },
-  textContainer: {
-    // height: 50
   },
   weatherText: {
     fontSize: 32,
     color: '#009378'
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 75,
+    height: 75,
   }
 }
 

@@ -28,32 +28,45 @@ class Body extends React.Component {
   }
 
   render() {
-    return (
-        <ScrollView style={styles.body}>
-          {this.state.weathers.map( (weather, index) => {
-            return (
-              <Weather key={index} weather={weather}/>
-            )
-          })}
-        </ScrollView>
-    )
+    if(this.state.weathers.length > 0) {
+      return (
+          <ScrollView style={styles.body}>
+            {this.state.weathers.map( (weather, index) => {
+              return (
+                <Weather key={index} weather={weather}/>
+              )
+            })}
+          </ScrollView>
+      );
+    } else {
+      return (
+        <View style={styles.loadingText}>
+          <Text>Loading Weather Forecast ..</Text>
+        </View>
+      );
+    }
+
   }
 
   componentDidMount() {
     let city = 'Jakarta';
-    let url = `http://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&mode=json&units=metric&cnt=5&APPID=8b8926b398fdba5ce76701d649c783f8`
+    let count = 10;
+    let url = `http://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&mode=json&units=metric&cnt=${count}&APPID=8b8926b398fdba5ce76701d649c783f8`
     let self = this;
     Axios.get(url)
         .then((response) => {
-          console.log(response);
           if(response.status = 200) {
-            console.log(response.data.list);
+            console.log(response.data);
             let today = new Date();
             let data = response.data.list.map((item, index) => {
               let weatherDate = new Date(today.setDate(today.getDate() + index));
               return {
                 date: self.convertDate(weatherDate),
                 temp: item.temp,
+                humidity: item.humidity,
+                windSpeed: item.speed,
+                windDir: item.deg,
+                clouds: item.clouds,
                 weather: item.weather[0],
                 icon: `http://openweathermap.org/img/w/${item.weather[0].icon}.png`
               }
@@ -85,6 +98,8 @@ const styles = {
   weatherText: {
     fontSize: 32,
     color: '#009378'
+  },
+  loadingText: {
   }
 }
 
