@@ -18,9 +18,7 @@ import App from './src/App';
 export default class undertheweather extends Component {
   render() {
     return (
-      <View>
         <App />
-      </View>
     );
   }
 }

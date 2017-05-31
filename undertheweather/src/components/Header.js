@@ -1,5 +1,6 @@
 import React from 'react';
 import {  View, Text, Image } from 'react-native';
+import { connect } from 'react-redux';
 
 class Header extends React.Component {
   render() {

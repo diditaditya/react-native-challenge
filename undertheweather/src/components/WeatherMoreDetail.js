@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text } from 'react-native';
 
 const MoreDetail = (props) => {
-  console.log(props);
   if(props.showMore) {
     return (
       <View style={styles.detailContainer}>
