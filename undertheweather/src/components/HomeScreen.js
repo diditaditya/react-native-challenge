@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, Image } from 'react-native';
+import { View, Text,
+  ActivityIndicator,
+  Image,
+  Button } from 'react-native';
 import { connect } from 'react-redux';
+import { StackNavigator } from 'react-navigation';
 
 import { getCurrentCoordinate } from '../store/Geolocation/action';
 import { fetchCurrentWeather } from '../store/OpenWeather/action';
 
+import Forecast from './Forecast';
 import StatusText from './HomeScreenStatusText';
 import Location from './HomeScreenLocation';
 import Thumbnail from './HomeScreenThumbnail'
@@ -38,6 +43,12 @@ const styles = {
 
 class HomeScreen extends React.Component {
 
+  static navigationOptions = {
+    // header: {
+    //   visible: false
+    // }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -59,7 +70,6 @@ class HomeScreen extends React.Component {
 
   selectWallpaper() {
     let time = new Date();
-    console.log(time.getHours());
     if(time.getHours() > 5) {
       this.setState({
         selectedWallpaper: this.state.wallpapers.day
@@ -72,7 +82,7 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    // console.log(this.state);
+    console.log(this.props);
     if(this.props.locationData.results) {
       if(!this.props.OWCurrentWeather) {
         this.fetchAllCurrentWeathers();
@@ -95,7 +105,7 @@ class HomeScreen extends React.Component {
             </View>
             <View style={styles.statusContainer}>
               <View style={styles.thumbnail}>
-                <Thumbnail currentWeather={this.props.OWCurrentWeather}/>
+                <Thumbnail currentWeather={this.props.OWCurrentWeather} navigation={this.props.navigation}/>
               </View>
             </View>
           </Image>
@@ -138,4 +148,19 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+let Home = connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
+
+// export default test;
+
+const HomeNav = StackNavigator({
+    HomeScreen: {
+      screen: Home,
+    },
+    Forecast: {
+      screen: Forecast
+    }
+  },{
+    headerMode: 'none'
+  });
+
+export default HomeNav;

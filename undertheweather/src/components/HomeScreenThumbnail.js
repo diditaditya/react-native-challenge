@@ -8,13 +8,14 @@ class CurrentWeatherThumbnail extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <View style={styles.mainContainer}>
         <View style={styles.weatherInfoContainer}>
           <View style={styles.descriptionContainer}>
               <Image source={{uri: "http://openweathermap.org/img/w/"+this.props.currentWeather.weather.icon+".png"}} style={styles.icon}/>
               {/* <Text style={styles.description}>{this.props.currentWeather.weather.description}</Text> */}
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Forecast')} >
                 <Image source={require('../images/684796_arrows_512x512.png')}  style={styles.showMore}/>
               </TouchableOpacity>
           </View>

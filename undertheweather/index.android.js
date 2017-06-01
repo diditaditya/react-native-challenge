@@ -13,6 +13,8 @@ import {
   ScrollView
 } from 'react-native';
 
+
+
 import App from './src/App';
 
 export default class undertheweather extends Component {
@@ -22,6 +24,8 @@ export default class undertheweather extends Component {
     );
   }
 }
+
+
 
 
 AppRegistry.registerComponent('undertheweather', () => undertheweather);
