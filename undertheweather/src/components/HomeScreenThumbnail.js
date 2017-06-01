@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 
 class CurrentWeatherThumbnail extends React.Component {
 
@@ -10,15 +10,26 @@ class CurrentWeatherThumbnail extends React.Component {
   render() {
     return (
       <View style={styles.mainContainer}>
-        <View style={styles.mainTempContainer}>
-            <Text style={styles.mainTemp}>{parseInt(this.props.currentWeather.main.temp)}</Text>
-            <Text style={styles.degree}>o</Text>
+        <View style={styles.weatherInfoContainer}>
+          <View style={styles.descriptionContainer}>
+              <Image source={{uri: "http://openweathermap.org/img/w/"+this.props.currentWeather.weather.icon+".png"}} style={styles.icon}/>
+              {/* <Text style={styles.description}>{this.props.currentWeather.weather.description}</Text> */}
+              <TouchableOpacity>
+                <Image source={require('../images/684796_arrows_512x512.png')}  style={styles.showMore}/>
+              </TouchableOpacity>
+          </View>
+          <View style={styles.mainTempContainer}>
+              <Text style={styles.mainTemp}>{parseInt(this.props.currentWeather.main.temp)}</Text>
+              <Text style={styles.degree}>o</Text>
+          </View>
+          <View style={styles.infoTempContainer}>
+            <Text style={styles.infoTemp}>min: {this.props.currentWeather.main.temp_min}</Text>
+            <Text style={styles.infoTemp}>max: {this.props.currentWeather.main.temp_max}</Text>
+          </View>
         </View>
-        <View style={styles.infoTempContainer}>
-          <Text style={styles.infoTemp}>min: {this.props.currentWeather.main.temp_min}</Text>
-          <Text style={styles.infoTemp}>max: {this.props.currentWeather.main.temp_max}</Text>
-        </View>
+        <View style={styles.showMoreContainer}>
 
+        </View>
       </View>
     );
   }
@@ -27,9 +38,18 @@ class CurrentWeatherThumbnail extends React.Component {
 
 const styles = {
   mainContainer: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     // alignItems: 'flex-end',
     // justifyContent: 'flex-end'
+    // borderWidth: 1
+  },
+  weatherInfoContainer: {
+    flexDirection: 'column'
+  },
+  descriptionContainer: {
+    // borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   mainTempContainer: {
     // borderWidth: 1,
@@ -38,6 +58,19 @@ const styles = {
   infoTempContainer: {
     // borderWidth: 1,
     flexDirection: 'row'
+  },
+  showMoreContainer: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  icon: {
+    // flex: 0.5,
+    width: 100,
+    height: 100,
+  },
+  description: {
+    flex: 1,
+    // borderWidth: 1
   },
   mainTemp: {
     fontSize: 150,
@@ -52,6 +85,12 @@ const styles = {
     marginTop: 25,
     fontSize: 50,
     // borderWidth: 1
+  },
+  showMore: {
+    margin: 10,
+    width: 50,
+    height: 50,
+    opacity: 0.6
   }
 }
 

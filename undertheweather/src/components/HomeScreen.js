@@ -12,25 +12,21 @@ import Thumbnail from './HomeScreenThumbnail'
 const styles = {
   mainContainer: {
     flex: 1,
-    // backgroundColor: '#045ded',
-    // flexDirection: 'row',
-    // justifyContent: 'space-between'
+    width: null,
+    height: null
   },
   locationContainer: {
     flex: 1,
-    // backgroundColor: '#ce3b06',
     padding: 10
   },
   statusContainer: {
     flex: 3,
-    // backgroundColor: '#e1ed04',
     alignItems: 'center',
     justifyContent: 'center'
   },
   thumbnail: {
     width: 300,
     height: 300,
-    // backgroundColor: '#045ded',
     // borderRadius: 10,
     // borderColor: '#ce3b06',
     // borderWidth: 1,
@@ -42,6 +38,17 @@ const styles = {
 
 class HomeScreen extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      wallpapers: {
+        day: require('../images/beautiful_light_blue_sky-wallpaper-480x800.jpg'),
+        night: require('../images/005e3efe1a23e55f2327eedd932c7742.jpg')
+      },
+      selectedWallpaper: ''
+    }
+  }
+
   fetchAllCurrentWeathers() {
     let coord = {
       lat: this.props.locationData.results[6].geometry.location.lat,
@@ -50,13 +57,27 @@ class HomeScreen extends React.Component {
     this.props.fetchOWCurrentWeather(coord);
   }
 
+  selectWallpaper() {
+    let time = new Date();
+    console.log(time.getHours());
+    if(time.getHours() > 5) {
+      this.setState({
+        selectedWallpaper: this.state.wallpapers.day
+      });
+    } else if (time.getHours() > 18) {
+      this.setState({
+        selectedWallpaper: this.state.wallpapers.night
+      });
+    }
+  }
+
   render() {
-    console.log(this.props);
+    // console.log(this.state);
     if(this.props.locationData.results) {
       if(!this.props.OWCurrentWeather) {
         this.fetchAllCurrentWeathers();
         return (
-          <View style={styles.mainContainer}>
+          <Image source={this.state.selectedWallpaper} style={styles.mainContainer}>
             <View style={styles.locationContainer}>
               <Location locationData={this.props.locationData}/>
             </View>
@@ -64,11 +85,11 @@ class HomeScreen extends React.Component {
               <ActivityIndicator size="large"/>
               <StatusText locationData={this.props.locationData} OWCurrentWeather={this.props.OWCurrentWeather}/>
             </View>
-          </View>
+          </Image>
         )
       } else {
         return (
-          <Image source={{uri: 'https://s-media-cache-ak0.pinimg.com/736x/2e/c6/b5/2ec6b5e14fe0cba0cb0aa5d2caeeccc6.jpg'}} style={styles.mainContainer}>
+          <Image source={this.state.selectedWallpaper} style={styles.mainContainer}>
             <View style={styles.locationContainer}>
                 <Location locationData={this.props.locationData}/>
             </View>
@@ -77,21 +98,24 @@ class HomeScreen extends React.Component {
                 <Thumbnail currentWeather={this.props.OWCurrentWeather}/>
               </View>
             </View>
-
           </Image>
         )
       }
     } else {
       return (
-        <View style={styles.mainContainer}>
-          <View style={styles.statusContainer}>
-            <ActivityIndicator size="large"/>
-            <StatusText locationData={this.props.locationData} OWCurrentWeather={this.props.OWCurrentWeather}/>
-          </View>
-        </View>
+        <Image source={this.state.selectedWallpaper} style={styles.mainContainer}>
+            <View style={styles.statusContainer}>
+              <ActivityIndicator size="large"/>
+              <StatusText locationData={this.props.locationData} OWCurrentWeather={this.props.OWCurrentWeather}/>
+            </View>
+        </Image>
       )
     }
 
+  }
+
+  componentWillMount() {
+    this.selectWallpaper();
   }
 
   componentDidMount() {
@@ -101,7 +125,6 @@ class HomeScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     locationData: state.Geolocation.locationData,
     OWCurrentWeather: state.OpenWeather.currentWeather

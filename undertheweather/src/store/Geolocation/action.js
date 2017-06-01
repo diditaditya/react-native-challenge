@@ -23,6 +23,7 @@ export const getCurrentPosition = (data) => {
     return Axios.get(url)
       .then((response) => {
         if(response.status === 200) {
+          console.log(response.data);
           dispatch(getCurrentPositionSuccess(response.data));
         } else {
           console.log('error fetching reverse-geocode data');
