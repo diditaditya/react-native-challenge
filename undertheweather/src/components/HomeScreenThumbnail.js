@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 
-class CurrentWeatherThumbnail extends React.Component {
+export class CurrentWeatherThumbnail extends React.Component {
 
   constructor(props) {
     super(props);

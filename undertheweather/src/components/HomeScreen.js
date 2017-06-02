@@ -41,7 +41,7 @@ const styles = {
 }
 
 
-class HomeScreen extends React.Component {
+export class HomeScreen extends React.Component {
 
   static navigationOptions = {
 
@@ -80,7 +80,7 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     if(this.props.locationData.results) {
       if(!this.props.OWCurrentWeather) {
         this.fetchAllCurrentWeathers();

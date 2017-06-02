@@ -24,7 +24,7 @@ const convertTime = (oriDate) => {
     return `${hour}-${minute}-${second}`;
 }
 
-class Body extends React.Component {
+export class Body extends React.Component {
 
   constructor(props) {
     super(props);
@@ -54,7 +54,7 @@ class Body extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     if(this.props.dailyForecast.length > 0) {
       return (
           <ScrollView style={styles.body}>
@@ -77,16 +77,16 @@ class Body extends React.Component {
   }
 
   getNewData() {
-    console.log('getting new data')
+    // console.log('getting new data')
     if(this.props.locationData) {
-      console.log(this.props.locationData.results[6].geometry.location)
+      // console.log(this.props.locationData.results[6].geometry.location)
       this.props.fetchDailyForecast(this.props.locationData.results[6].geometry.location);
     }
   }
 
   checkUpdatedAt() {
-    console.log('checking updated time');
-    console.log('updated at: ', this.state.updatedAt);
+    // console.log('checking updated time');
+    // console.log('updated at: ', this.state.updatedAt);
     let now = new Date();
     if(this.state.updatedAt !== null) {
       let lastUpdate = new Date(this.state.updatedAt);

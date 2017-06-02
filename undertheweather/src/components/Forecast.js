@@ -7,7 +7,7 @@ import NavBar from './NavBar';
 import Header from './Header';
 import Body from './Body';
 
-class Forecast extends React.Component {
+export class Forecast extends React.Component {
 
   constructor(props) {
     super(props);
@@ -17,11 +17,11 @@ class Forecast extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <Image source={this.state.wallpaper} style={styles.container}>
         <NavBar navigation={this.props.navigation}/>
-        <Header />
+        <Header locationData={this.props.locationData} OWCurrentWeather={this.props.OWCurrentWeather} />
         <Body />
       </Image>
     )
@@ -49,7 +49,9 @@ const styles = {
 
 const mapStateToProps = (state) => {
   return ({
-    wallpaper: state.Geolocation.selectedWallpaper
+    wallpaper: state.Geolocation.selectedWallpaper,
+    locationData: state.Geolocation.locationData,
+    OWCurrentWeather: state.OpenWeather.currentWeather
   });
 }
 

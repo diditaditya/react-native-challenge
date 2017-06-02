@@ -3,7 +3,7 @@ import {  View, TouchableOpacity, Text , Image} from 'react-native';
 
 import MoreDetail from './WeatherMoreDetail';
 
-class Weather extends React.Component {
+export class Weather extends React.Component {
 
   constructor(props) {
     super(props);

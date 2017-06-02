@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const HomeScreenLocation = (props) => {
+export const HomeScreenLocation = (props) => {
   return (
     <View>
       <Text style={styles.location}>{props.locationData.results[9].formatted_address}</Text>

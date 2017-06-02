@@ -2,7 +2,7 @@ import React from 'react';
 import {  View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 
-class Header extends React.Component {
+export class Header extends React.Component {
   render() {
     return (
       <View style={styles.header}>
@@ -31,11 +31,4 @@ const styles = {
   }
 }
 
-const mapStateToProps = (state) => {
-  return ({
-    locationData: state.Geolocation.locationData,
-    OWCurrentWeather: state.OpenWeather.currentWeather
-  });
-}
-
-export default connect(mapStateToProps, null)(Header);
+export default Header;
