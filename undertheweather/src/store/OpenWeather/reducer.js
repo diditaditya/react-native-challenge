@@ -1,7 +1,8 @@
 import { FETCH_CURRENT_WEATHER_SUCCESS } from '../constants';
 
 const initialState = {
-  currentWeather: ''
+  currentWeather: '',
+  dailyForecast: ''
 }
 
 const OpenWeatherReducer = (state=initialState, action) => {
@@ -10,6 +11,11 @@ const OpenWeatherReducer = (state=initialState, action) => {
       return {
         ...state,
         currentWeather: action.payload
+      }
+    case 'FETCH_DAILY_FORECAST_SUCCESS':
+      return {
+        ...state,
+        dailyForecast: action.payload
       }
     default:
       return state

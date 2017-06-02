@@ -45,7 +45,8 @@ class Weather extends React.Component {
 
 const styles = {
   weatherContainer: {
-    backgroundColor: '#1EE494',
+    // backgroundColor: '#1EE494',
+    borderWidth: 1,
     marginBottom: 10,
     padding: 5,
     borderRadius: 10
@@ -55,8 +56,8 @@ const styles = {
     justifyContent: 'space-between'
   },
   weatherText: {
-    fontSize: 32,
-    color: '#009378'
+    fontSize: 24,
+    // color: '#009378'
   },
   image: {
     width: 75,

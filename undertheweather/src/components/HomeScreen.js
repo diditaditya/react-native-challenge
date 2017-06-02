@@ -44,9 +44,7 @@ const styles = {
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    // header: {
-    //   visible: false
-    // }
+
   }
 
   constructor(props) {

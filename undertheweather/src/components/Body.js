@@ -1,19 +1,41 @@
 import React from 'react';
-import {  View, Text, ScrollView } from 'react-native';
+import {  View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import {  connect } from 'react-redux';
 import Axios from 'axios';
 
 import Weather from './Weather';
+
+import { fetchDailyForecast } from '../store/OpenWeather/action';
+
+const convertTime = (oriDate) => {
+    let fullDate = new Date(oriDate);
+    let hour = String(fullDate.getHours());
+    if(hour.length === 1) {
+        hour = '0' + hour;
+    }
+    let minute = String(fullDate.getMinutes());
+    if(minute.length === 1) {
+        minute = '0' + minute;
+    }
+    let second = String(fullDate.getSeconds());
+    if(second.length === 1) {
+        second = '0' + second;
+    }
+    return `${hour}-${minute}-${second}`;
+}
 
 class Body extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      weathers: []
+      weathers: [],
+      updatedAt: null
     }
   }
 
   convertDate(oriDate) {
+    if(oriDate !== null) {
       let fullDate = new Date(oriDate);
       let year = fullDate.getFullYear();
       let month = String(fullDate.getMonth() + 1);
@@ -25,13 +47,18 @@ class Body extends React.Component {
           date = '0' + date;
       }
       return `${year}-${month}-${date}`;
+    } else {
+      return '-';
+    }
+
   }
 
   render() {
-    if(this.state.weathers.length > 0) {
+    console.log(this.props);
+    if(this.props.dailyForecast.length > 0) {
       return (
           <ScrollView style={styles.body}>
-            {this.state.weathers.map( (weather, index) => {
+            {this.props.dailyForecast.map( (weather, index) => {
               return (
                 <Weather key={index} weather={weather}/>
               )
@@ -41,6 +68,7 @@ class Body extends React.Component {
     } else {
       return (
         <View style={styles.loadingText}>
+          <ActivityIndicator size="large"/>
           <Text>Loading Weather Forecast ..</Text>
         </View>
       );
@@ -48,59 +76,77 @@ class Body extends React.Component {
 
   }
 
+  getNewData() {
+    console.log('getting new data')
+    if(this.props.locationData) {
+      console.log(this.props.locationData.results[6].geometry.location)
+      this.props.fetchDailyForecast(this.props.locationData.results[6].geometry.location);
+    }
+  }
+
+  checkUpdatedAt() {
+    console.log('checking updated time');
+    console.log('updated at: ', this.state.updatedAt);
+    let now = new Date();
+    if(this.state.updatedAt !== null) {
+      let lastUpdate = new Date(this.state.updatedAt);
+      console.log((now.getMinutes() - lastUpdate.getMinutes())/(1000*60));
+      return ((now.getMinutes() - lastUpdate.getMinutes())/(1000*60)) > 30
+    } else {
+      return false
+    }
+  }
+
+  // updateDailyForecast() {
+  //   console.log('updating daily forecast')
+  //   console.log(this.checkUpdatedAt());
+  //   if(this.props.locationData) {
+  //     if(this.state.updatedAt === null) {
+  //         this.getNewData();
+  //     }
+  //   }
+  // }
+
+  componentDidUpdate() {
+    console.log('body is updated')
+  }
+
   componentDidMount() {
-    let city = 'Jakarta';
-    let count = 10;
-    let url = `http://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&mode=json&units=metric&cnt=${count}&APPID=8b8926b398fdba5ce76701d649c783f8`
-    let self = this;
-    Axios.get(url)
-        .then((response) => {
-          if(response.status = 200) {
-            console.log(response.data);
-            let today = new Date();
-            let data = response.data.list.map((item, index) => {
-              let weatherDate = new Date(today.setDate(today.getDate() + index));
-              return {
-                date: self.convertDate(weatherDate),
-                temp: item.temp,
-                humidity: item.humidity,
-                windSpeed: item.speed,
-                windDir: item.deg,
-                clouds: item.clouds,
-                weather: item.weather[0],
-                icon: `http://openweathermap.org/img/w/${item.weather[0].icon}.png`
-              }
-            } );
-            console.log(data);
-            self.setState({
-              weathers: data
-            });
-          } else {
-            console.log('failed, check response')
-          }
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    this.getNewData();
   }
 
 }
 
 const styles = {
   body: {
-    backgroundColor: '#F6F6F6',
+    // backgroundColor: '#F6F6F6',
     padding: 5,
     margin: 10
   },
   weatherContainer: {
-    backgroundColor: '#1EE494'
+    // backgroundColor: '#1EE494'
   },
   weatherText: {
-    fontSize: 32,
-    color: '#009378'
+    fontSize: 24,
+    // color: '#009378'
   },
   loadingText: {
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 }
 
-export default Body;
+const mapStateToProps = (state) => {
+  return {
+    locationData: state.Geolocation.locationData,
+    dailyForecast: state.OpenWeather.dailyForecast
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchDailyForecast: (coord) => dispatch(fetchDailyForecast(coord))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Body);

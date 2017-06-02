@@ -2,6 +2,22 @@ import Axios from 'axios';
 
 import { GET_CURRENT_POSITION_SUCCESS, GET_CURRENT_POSITION_FAILED } from '../constants';
 
+export const selectWallpaper = () => {
+  let time = new Date();
+  if(time.getHours() > 5) {
+    return {
+      type: 'SELECT_WALLPAPER',
+      payload: 'day'
+    }
+  } else if (time.getHours() > 18) {
+    return {
+      type: 'SELECT_WALLPAPER',
+      payload: 'night'
+    }
+  }
+}
+
+
 export const getCurrentPositionSuccess = (data) => {
   return {
     type: GET_CURRENT_POSITION_SUCCESS,
@@ -42,11 +58,20 @@ export const getCurrentCoordinate = () => {
         dispatch(getCurrentPosition(data));
       }, err => {
         console.log(err);
-        let latlng = {
-            lat: -6.17511,
-            lng: 106.8650395
+        if(err.code === 3) {
+          console.log('Timed Out!')
+        }
+        let data = {
+          coords: {
+            latitude: -6.17511,
+            longitude: 106.8650395
+          }
         };
-        dispatch(getCurrentPosition(latlng));
+        dispatch(getCurrentPosition(data));
+      }, {
+        enableHighAccuracy: true,
+        timeout: 3000,
+        maximumAge: 0
       });
 
   }

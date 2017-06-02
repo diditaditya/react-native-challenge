@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image } from 'react-native';
+import { connect } from 'react-redux';
 import { StackNavigator } from 'react-navigation';
 
 import NavBar from './NavBar';
@@ -8,23 +9,48 @@ import Body from './Body';
 
 class Forecast extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      wallpaper: require('../images/beautiful_light_blue_sky-wallpaper-480x800.jpg')
+    }
+  }
+
   render() {
     console.log(this.props);
     return (
-      <View style={styles.container}>
+      <Image source={this.state.wallpaper} style={styles.container}>
         <NavBar navigation={this.props.navigation}/>
         <Header />
         <Body />
-      </View>
+      </Image>
     )
+  }
+
+  componentWillMount() {
+    if(this.props.wallpaper) {
+      let image = this.props.wallpaper;
+      this.setState({
+        wallpaper: require(image)
+      });
+    }
   }
 
 }
 
 const styles = {
   container: {
-    // backgroundColor: 'rgba(11, 78, 186, 0.6)'
+    // backgroundColor: 'rgba(11, 78, 186, 0.6),'
+    flex: 1,
+    width: null,
+    height: null
   }
 }
 
-export default Forecast;
+const mapStateToProps = (state) => {
+  return ({
+    wallpaper: state.Geolocation.selectedWallpaper
+  });
+}
+
+export default connect(mapStateToProps, null)(Forecast);

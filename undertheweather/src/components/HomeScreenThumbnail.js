@@ -8,7 +8,7 @@ class CurrentWeatherThumbnail extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <View style={styles.mainContainer}>
         <View style={styles.weatherInfoContainer}>
