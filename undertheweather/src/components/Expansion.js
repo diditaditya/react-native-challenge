@@ -14,4 +14,4 @@ class Expansion from React.Component {
 
 }
 
-export default 
+export default Expansion;

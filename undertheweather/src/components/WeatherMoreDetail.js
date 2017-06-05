@@ -1,8 +1,30 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
+const now = new Date();
+let textColor = '';
+if (now.getHours > 5) {
+  textColor = 'rgba(255,255,255,1)';
+} else if (now.getHours > 18 || now.getHours() >= 0) {
+  textColor = 'rgba(0,0,0,1)';
+}
+
+const styles = {
+  detailContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  text: {
+    color: textColor,
+    fontSize: 12,
+  },
+  more: {
+    fontSize: 8,
+  },
+};
+
 export const MoreDetail = (props) => {
-  if(props.showMore) {
+  if (props.showMore) {
     return (
       <View style={styles.detailContainer}>
         <View>
@@ -22,33 +44,13 @@ export const MoreDetail = (props) => {
         </View>
       </View>
     );
-  } else {
-    return (
-      <View></View>
-    );
   }
-}
 
-const now = new Date();
-let textColor = '';
-let bgColor = '';
-if (now.getHours > 5) {
-  textColor = 'rgba(255,255,255,1)';
-  bgColor = 'rgba(0,0,0,0.5)';
-} else if (now.getHours > 18 || now.getHours() >= 0) {
-  textColor = 'rgba(0,0,0,1)';
-  bgColor = 'rgba(255,255,255,0.5)';
-}
-
-const styles = {
-  detailContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  text: {
-    color: textColor,
-    fontSize: 12
-  }
-}
+  return (
+    <View>
+      <Text> show more </Text>
+    </View>
+  );
+};
 
 export default MoreDetail;

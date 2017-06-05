@@ -78,6 +78,7 @@ export const fetchDailyForecast = (coord) => {
               let date = new Date(today);
               date.setDate(today.getDate() + index);
               return {
+                id: index,
                 date: convertDate(date),
                 temp: item.temp,
                 humidity: item.humidity,
@@ -102,15 +103,16 @@ export const fetchDailyForecast = (coord) => {
 }
 
 export const fetchHourlyForecast = (coord) => {
-  console.log('in action fetchHourlyForecast');
-  let url = `http://api.openweathermap.org/data/2.5/forecast?lat=${coord.lat}&lon=${coord.lng}&mode=json&units=metric&APPID=8b8926b398fdba5ce76701d649c783f8`;
-  return dispatch => {
+  // console.log('in action fetchHourlyForecast');
+  const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${coord.lat}&lon=${coord.lng}&mode=json&units=metric&APPID=8b8926b398fdba5ce76701d649c783f8`;
+  return (dispatch) => {
     return Axios.get(url)
         .then((response) => {
-          if(response.status = 200) {
+          if (response.status === 200) {
             // console.log(response.data);
-            let data = response.data.list.map((item, index) => {
+            const data = response.data.list.map((item, index) => {
               return {
+                id: index,
                 date: item.dt_txt,
                 main: item.main,
                 wind: item.wind,

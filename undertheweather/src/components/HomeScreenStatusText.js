@@ -1,21 +1,29 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
+const styles = {
+  status: {
+    fontSize: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+};
+
 const StatusText = (props) => {
   let status = '';
 
-  if(props.locationData.results) {
-    if(props.OWCurrentWeather) {
-      if(typeof props.OWCurrentWeather === 'object') {
-        status = ''
+  if (props.locationData.results) {
+    if (props.OWCurrentWeather) {
+      if (typeof props.OWCurrentWeather === 'object') {
+        status = '';
       } else {
-          status = 'Loading Current Weather..'
+        status = 'Loading Current Weather..';
       }
     } else {
-      status = 'Connecting to Weather Servers..'
+      status = 'Connecting to Weather Servers..';
     }
   } else {
-    status = 'Loading Location Data..'
+    status = 'Loading Location Data..';
   }
 
   return (
@@ -23,15 +31,6 @@ const StatusText = (props) => {
       <Text style={styles.status}>{status}</Text>
     </View>
   );
-
-}
-
-const styles = {
-  status: {
-    fontSize: 16,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-}
+};
 
 export default StatusText;
