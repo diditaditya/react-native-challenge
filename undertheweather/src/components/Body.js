@@ -3,9 +3,10 @@ import {  View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import {  connect } from 'react-redux';
 import Axios from 'axios';
 
+import HourlyForecastBar from './HourlyForecastBar';
 import Weather from './Weather';
 
-import { fetchDailyForecast } from '../store/OpenWeather/action';
+import { fetchDailyForecast, fetchHourlyForecast } from '../store/OpenWeather/action';
 
 const convertTime = (oriDate) => {
     let fullDate = new Date(oriDate);
@@ -54,9 +55,11 @@ export class Body extends React.Component {
   }
 
   render() {
-    // console.log(this.props);
+    console.log(this.props);
     if(this.props.dailyForecast.length > 0) {
       return (
+        <ScrollView style={styles.container}>
+          <HourlyForecastBar hourlyForecast={this.props.hourlyForecast}/>
           <ScrollView style={styles.body}>
             {this.props.dailyForecast.map( (weather, index) => {
               return (
@@ -64,6 +67,7 @@ export class Body extends React.Component {
               )
             })}
           </ScrollView>
+        </ScrollView>
       );
     } else {
       return (
@@ -79,8 +83,10 @@ export class Body extends React.Component {
   getNewData() {
     // console.log('getting new data')
     if(this.props.locationData) {
+      let maxIndex = this.props.locationData.results.length - 1;
       // console.log(this.props.locationData.results[6].geometry.location)
-      this.props.fetchDailyForecast(this.props.locationData.results[6].geometry.location);
+      this.props.fetchDailyForecast(this.props.locationData.results[maxIndex].geometry.location);
+      this.props.fetchHourlyForecast(this.props.locationData.results[maxIndex].geometry.location);
     }
   }
 
@@ -118,6 +124,9 @@ export class Body extends React.Component {
 }
 
 const styles = {
+  container: {
+
+  },
   body: {
     // backgroundColor: '#F6F6F6',
     padding: 5,
@@ -139,13 +148,15 @@ const styles = {
 const mapStateToProps = (state) => {
   return {
     locationData: state.Geolocation.locationData,
-    dailyForecast: state.OpenWeather.dailyForecast
+    dailyForecast: state.OpenWeather.dailyForecast,
+    hourlyForecast: state.OpenWeather.hourlyForecast
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchDailyForecast: (coord) => dispatch(fetchDailyForecast(coord))
+    fetchDailyForecast: (coord) => dispatch(fetchDailyForecast(coord)),
+    fetchHourlyForecast: (coord) => dispatch(fetchHourlyForecast(coord))
   }
 }
 

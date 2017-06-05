@@ -9,8 +9,8 @@ class NavBar extends React.Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={()=>this.props.navigation.goBack()}><Text>Home</Text></TouchableOpacity>
-        <TouchableOpacity><Text>Daily</Text></TouchableOpacity>
-        <TouchableOpacity><Text>Hourly</Text></TouchableOpacity>
+        <TouchableOpacity><Text>Forecast</Text></TouchableOpacity>
+        <TouchableOpacity><Text>Expansion</Text></TouchableOpacity>
       </View>
     )
   }

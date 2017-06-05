@@ -33,6 +33,7 @@ export const getCurrentPositionFailed = (data) => {
 }
 
 export const getCurrentPosition = (data) => {
+  console.log("getting location data from google's geocode")
   let latlng = `${data.coords.latitude},${data.coords.longitude}`;
   let url = `http://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}`;
   return dispatch => {
@@ -55,6 +56,7 @@ export const getCurrentPosition = (data) => {
 export const getCurrentCoordinate = () => {
   return dispatch => {
     return navigator.geolocation.getCurrentPosition(data => {
+        console.log(data);
         dispatch(getCurrentPosition(data));
       }, err => {
         console.log(err);
@@ -67,10 +69,11 @@ export const getCurrentCoordinate = () => {
             longitude: 106.8650395
           }
         };
+        console.log('using default location');
         dispatch(getCurrentPosition(data));
       }, {
         enableHighAccuracy: true,
-        timeout: 3000,
+        timeout: 1000,
         maximumAge: 0
       });
 

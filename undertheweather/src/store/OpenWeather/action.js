@@ -16,6 +16,13 @@ const setDailyForecast = (data) => {
   }
 }
 
+const setHourlyForecast = (data) => {
+  return {
+    type: 'FETCH_HOURLY_FORECAST_SUCCESS',
+    payload: data
+  }
+}
+
 export const fetchCurrentWeather = (coord) => {
   let url = `http://api.openweathermap.org/data/2.5/weather?lat=${coord.lat}&lon=${coord.lng}&mode=json&units=metric&APPID=8b8926b398fdba5ce76701d649c783f8`;
   return dispatch => {
@@ -64,12 +71,14 @@ export const fetchDailyForecast = (coord) => {
     return Axios.get(url)
         .then((response) => {
           if(response.status = 200) {
-            console.log(response.data);
+            // console.log(response.data);
             let today = new Date();
+            console.log(today);
             let data = response.data.list.map((item, index) => {
-              let weatherDate = new Date(today.setDate(today.getDate() + index));
+              let date = new Date(today);
+              date.setDate(today.getDate() + index);
               return {
-                date: convertDate(weatherDate),
+                date: convertDate(date),
                 temp: item.temp,
                 humidity: item.humidity,
                 windSpeed: item.speed,
@@ -90,4 +99,34 @@ export const fetchDailyForecast = (coord) => {
         });
   }
 
+}
+
+export const fetchHourlyForecast = (coord) => {
+  console.log('in action fetchHourlyForecast');
+  let url = `http://api.openweathermap.org/data/2.5/forecast?lat=${coord.lat}&lon=${coord.lng}&mode=json&units=metric&APPID=8b8926b398fdba5ce76701d649c783f8`;
+  return dispatch => {
+    return Axios.get(url)
+        .then((response) => {
+          if(response.status = 200) {
+            // console.log(response.data);
+            let data = response.data.list.map((item, index) => {
+              return {
+                date: item.dt_txt,
+                main: item.main,
+                wind: item.wind,
+                clouds: item.clouds,
+                weather: item.weather[0],
+                icon: `http://openweathermap.org/img/w/${item.weather[0].icon}.png`
+              }
+            });
+            dispatch(setHourlyForecast(data))
+          } else {
+            console.log('Failed fetching hourly data from Open Weather');
+            console.log(response);
+          }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+  }
 }

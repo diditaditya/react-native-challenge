@@ -6,19 +6,19 @@ export const MoreDetail = (props) => {
     return (
       <View style={styles.detailContainer}>
         <View>
-          <Text>Temperature:</Text>
-          <Text>Max: { props.weather.temp.max } C</Text>
-          <Text>Min: { props.weather.temp.min } C</Text>
+          <Text style={styles.text}>Temperature:</Text>
+          <Text style={styles.text}>Max: { props.weather.temp.max } C</Text>
+          <Text style={styles.text}>Min: { props.weather.temp.min } C</Text>
         </View>
         <View>
-          <Text>Wind:</Text>
-          <Text>Speed: {props.weather.windSpeed} m/s</Text>
-          <Text>Direction: {props.weather.windDir} deg</Text>
+          <Text style={styles.text}>Wind:</Text>
+          <Text style={styles.text}>Speed: {props.weather.windSpeed} m/s</Text>
+          <Text style={styles.text}>Direction: {props.weather.windDir} deg</Text>
         </View>
         <View>
-          <Text>Other:</Text>
-          <Text>Humidity: {props.weather.humidity} %</Text>
-          <Text>Cloudiness: {props.weather.clouds} %</Text>
+          <Text style={styles.text}>Other:</Text>
+          <Text style={styles.text}>Humidity: {props.weather.humidity} %</Text>
+          <Text style={styles.text}>Cloudiness: {props.weather.clouds} %</Text>
         </View>
       </View>
     );
@@ -29,10 +29,25 @@ export const MoreDetail = (props) => {
   }
 }
 
+const now = new Date();
+let textColor = '';
+let bgColor = '';
+if (now.getHours > 5) {
+  textColor = 'rgba(255,255,255,1)';
+  bgColor = 'rgba(0,0,0,0.5)';
+} else if (now.getHours > 18 || now.getHours() >= 0) {
+  textColor = 'rgba(0,0,0,1)';
+  bgColor = 'rgba(255,255,255,0.5)';
+}
+
 const styles = {
   detailContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-around',
+  },
+  text: {
+    color: textColor,
+    fontSize: 12
   }
 }
 

@@ -60,19 +60,20 @@ export class HomeScreen extends React.Component {
 
   fetchAllCurrentWeathers() {
     let coord = {
-      lat: this.props.locationData.results[6].geometry.location.lat,
-      lng: this.props.locationData.results[6].geometry.location.lng
+      lat: this.props.locationData.results[0].geometry.location.lat,
+      lng: this.props.locationData.results[0].geometry.location.lng
     };
     this.props.fetchOWCurrentWeather(coord);
   }
 
   selectWallpaper() {
     let time = new Date();
+    console.log(time);
     if(time.getHours() > 5) {
       this.setState({
         selectedWallpaper: this.state.wallpapers.day
       });
-    } else if (time.getHours() > 18) {
+    } else if (time.getHours() >= 18 || time.getHours() >= 0) {
       this.setState({
         selectedWallpaper: this.state.wallpapers.night
       });
@@ -105,6 +106,9 @@ export class HomeScreen extends React.Component {
               <View style={styles.thumbnail}>
                 <Thumbnail currentWeather={this.props.OWCurrentWeather} navigation={this.props.navigation}/>
               </View>
+            </View>
+            <View style={{ alignItems: 'center', margin: 10 }}>
+              <Text style={{ fontSize: 10 }}>Powered by <Text style={{fontWeight: 'bold'}} >OpenWeatherMap.org</Text></Text>
             </View>
           </Image>
         )

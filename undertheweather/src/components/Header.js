@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 
 export class Header extends React.Component {
   render() {
+    let maxIndex = this.props.locationData.results.length - 1;
     return (
       <View style={styles.header}>
-        <Text style={styles.cityName}>{this.props.locationData.results[9].formatted_address}</Text>
-        <Text style={styles.currentTemp}>{parseInt(this.props.OWCurrentWeather.main.temp)} C</Text>
+        <Text style={styles.cityName}>{this.props.locationData.results[maxIndex].formatted_address}</Text>
+        {/* <Text style={styles.currentTemp}>{parseInt(this.props.OWCurrentWeather.main.temp)} C</Text> */}
       </View>
     )
   }
@@ -19,14 +20,16 @@ const styles = {
     // borderWidth: 1,
     width: '100%',
     padding: 5,
-    // height: 150
+    // height: 150,
+    alignItems: 'center'
   },
   cityName: {
-    fontSize: 25,
-    // color: '#F6F6F6'
+    fontSize: 16,
+    // color: '#F6F6F6',
+    justifyContent: 'center'
   },
   currentTemp: {
-    fontSize: 18,
+    fontSize: 12,
     // color: '#F6F6F6'
   }
 }
